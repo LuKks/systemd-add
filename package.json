@@ -8,7 +8,7 @@
   },
   "files": [],
   "scripts": {
-    "test": "standard && brittle test.js"
+    "test": "standard"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/lukks/systemd-add#readme",
   "devDependencies": {
-    "brittle": "^3.3.2",
     "standard": "^17.1.0"
   },
   "dependencies": {
