@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "systemd-add": "bin.js"
+  },
   "files": [],
   "scripts": {
     "test": "standard && brittle test.js"
