@@ -66,8 +66,8 @@ WantedBy=multi-user.target
       console.log('Service file:', filename)
     }
 
-    await execute('systemctl --' + manager + ' enable ' + name + '.service', { verbose: opts.verbose })
-    await execute('systemctl --' + manager + ' daemon-reload', { verbose: opts.verbose })
+    await execute('systemctl', ['--' + manager, 'enable', name + '.service'], { verbose: opts.verbose })
+    await execute('systemctl', ['--' + manager, 'daemon-reload'], { verbose: opts.verbose })
   }
 }
 
