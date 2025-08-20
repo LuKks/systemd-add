@@ -1,7 +1,7 @@
 {
   "name": "systemd-add",
   "version": "1.0.4",
-  "description": "",
+  "description": "Create system services easily",
   "main": "index.js",
   "bin": {
     "systemd-add": "bin.js"
