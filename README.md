@@ -3,7 +3,7 @@
 Create system services easily
 
 ```
-npm i systemd-add
+npm i -g systemd-add
 ```
 
 ## Usage
