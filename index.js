@@ -32,7 +32,7 @@ module.exports = class Systemd {
     options.push('WorkingDirectory=' + path.resolve(opts.cwd || '.'))
 
     options.push('RestartSec=1')
-    options.push('Restart=' + opts.restart || 'always')
+    options.push('Restart=' + (opts.restart || 'always'))
 
     if (opts.option) {
       for (const opt of opts.option) {
