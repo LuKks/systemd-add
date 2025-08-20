@@ -54,26 +54,37 @@ ${options.join('\n')}
 WantedBy=multi-user.target
 `.trim() + '\n'
 
+    const sudo = manager === 'system' && process.getuid() !== 0
     const filename = dir + '/' + name + '.service'
 
     if (manager === 'user') {
       await fs.promises.mkdir(path.dirname(filename), { recursive: true })
     }
 
-    await fs.promises.writeFile(filename, service)
+    if (sudo) {
+      const tmpfile = '/tmp/' + name + '.service.tmp.' + Math.random()
 
-    if (opts.verbose) {
-      console.log('Service file:', filename)
+      await fs.promises.writeFile(tmpfile, service)
+      await execute('mv', [tmpfile, filename], { sudo, verbose: opts.verbose })
+    } else {
+      await fs.promises.writeFile(filename, service)
     }
 
-    await execute('systemctl', ['--' + manager, 'enable', name + '.service'], { verbose: opts.verbose })
-    await execute('systemctl', ['--' + manager, 'daemon-reload'], { verbose: opts.verbose })
+    if (opts.verbose) {
+      console.log('Created service file:', filename)
+    }
+
+    await execute('systemctl', ['--' + manager, 'enable', name + '.service'], { sudo, verbose: opts.verbose })
+    await execute('systemctl', ['--' + manager, 'daemon-reload'], { sudo, verbose: opts.verbose })
   }
 }
 
 function execute (command, args, opts = {}) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args, { stdio: opts.verbose ? 'inherit' : 'ignore' })
+    const cmd = opts.sudo ? 'sudo' : command
+    const argv = opts.sudo ? [command, ...args] : args
+
+    const child = spawn(cmd, argv, { stdio: opts.verbose ? 'inherit' : 'ignore' })
 
     child.on('close', function (code) {
       if (code === 0) resolve()
